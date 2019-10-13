@@ -1,0 +1,726 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000002  00800100  000002d8  0000034c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000002d8  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  0000034e  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000380  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  000003bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000971  00000000  00000000  000003e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000074f  00000000  00000000  00000d55  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000345  00000000  00000000  000014a4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000bc  00000000  00000000  000017ec  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003c7  00000000  00000000  000018a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000286  00000000  00000000  00001c6f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000030  00000000  00000000  00001ef5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	13 c0       	rjmp	.+38     	; 0x28 <__ctors_end>
+   2:	25 c0       	rjmp	.+74     	; 0x4e <__bad_interrupt>
+   4:	24 c0       	rjmp	.+72     	; 0x4e <__bad_interrupt>
+   6:	9e c0       	rjmp	.+316    	; 0x144 <__vector_3>
+   8:	22 c0       	rjmp	.+68     	; 0x4e <__bad_interrupt>
+   a:	21 c0       	rjmp	.+66     	; 0x4e <__bad_interrupt>
+   c:	20 c0       	rjmp	.+64     	; 0x4e <__bad_interrupt>
+   e:	1f c0       	rjmp	.+62     	; 0x4e <__bad_interrupt>
+  10:	1e c0       	rjmp	.+60     	; 0x4e <__bad_interrupt>
+  12:	1d c0       	rjmp	.+58     	; 0x4e <__bad_interrupt>
+  14:	1c c0       	rjmp	.+56     	; 0x4e <__bad_interrupt>
+  16:	1b c0       	rjmp	.+54     	; 0x4e <__bad_interrupt>
+  18:	1a c0       	rjmp	.+52     	; 0x4e <__bad_interrupt>
+  1a:	19 c0       	rjmp	.+50     	; 0x4e <__bad_interrupt>
+  1c:	18 c0       	rjmp	.+48     	; 0x4e <__bad_interrupt>
+  1e:	17 c0       	rjmp	.+46     	; 0x4e <__bad_interrupt>
+  20:	90 c0       	rjmp	.+288    	; 0x142 <__vector_16>
+  22:	15 c0       	rjmp	.+42     	; 0x4e <__bad_interrupt>
+  24:	14 c0       	rjmp	.+40     	; 0x4e <__bad_interrupt>
+  26:	13 c0       	rjmp	.+38     	; 0x4e <__bad_interrupt>
+
+00000028 <__ctors_end>:
+  28:	11 24       	eor	r1, r1
+  2a:	1f be       	out	0x3f, r1	; 63
+  2c:	cf ef       	ldi	r28, 0xFF	; 255
+  2e:	d1 e0       	ldi	r29, 0x01	; 1
+  30:	de bf       	out	0x3e, r29	; 62
+  32:	cd bf       	out	0x3d, r28	; 61
+
+00000034 <__do_copy_data>:
+  34:	11 e0       	ldi	r17, 0x01	; 1
+  36:	a0 e0       	ldi	r26, 0x00	; 0
+  38:	b1 e0       	ldi	r27, 0x01	; 1
+  3a:	e8 ed       	ldi	r30, 0xD8	; 216
+  3c:	f2 e0       	ldi	r31, 0x02	; 2
+  3e:	02 c0       	rjmp	.+4      	; 0x44 <__SREG__+0x5>
+  40:	05 90       	lpm	r0, Z+
+  42:	0d 92       	st	X+, r0
+  44:	a2 30       	cpi	r26, 0x02	; 2
+  46:	b1 07       	cpc	r27, r17
+  48:	d9 f7       	brne	.-10     	; 0x40 <__SREG__+0x1>
+  4a:	90 d0       	rcall	.+288    	; 0x16c <main>
+  4c:	43 c1       	rjmp	.+646    	; 0x2d4 <_exit>
+
+0000004e <__bad_interrupt>:
+  4e:	d8 cf       	rjmp	.-80     	; 0x0 <__vectors>
+
+00000050 <system_sleep>:
+#define REF_AVCC 1
+
+
+// Sleep
+void system_sleep(void) {
+	set_sleep_mode(SLEEP_MODE_PWR_DOWN); // Set sleep mode
+  50:	83 b7       	in	r24, 0x33	; 51
+  52:	89 7f       	andi	r24, 0xF9	; 249
+  54:	84 60       	ori	r24, 0x04	; 4
+  56:	83 bf       	out	0x33, r24	; 51
+	sleep_mode(); // System sleeps here
+  58:	83 b7       	in	r24, 0x33	; 51
+  5a:	81 60       	ori	r24, 0x01	; 1
+  5c:	83 bf       	out	0x33, r24	; 51
+  5e:	88 95       	sleep
+  60:	83 b7       	in	r24, 0x33	; 51
+  62:	8e 7f       	andi	r24, 0xFE	; 254
+  64:	83 bf       	out	0x33, r24	; 51
+  66:	08 95       	ret
+
+00000068 <setup_watchdog>:
+}
+
+// Setup watchdog timed sequence
+void setup_watchdog(uint8_t wdDelay) {
+  68:	8a 30       	cpi	r24, 0x0A	; 10
+  6a:	08 f0       	brcs	.+2      	; 0x6e <setup_watchdog+0x6>
+  6c:	89 e0       	ldi	r24, 0x09	; 9
+	if (wdDelay > 9) { 
+		wdDelay = 9;
+	}
+	
+	uint8_t bb = wdDelay & 7;
+  6e:	98 2f       	mov	r25, r24
+  70:	97 70       	andi	r25, 0x07	; 7
+	if (wdDelay > 7) { 
+  72:	88 30       	cpi	r24, 0x08	; 8
+  74:	08 f0       	brcs	.+2      	; 0x78 <setup_watchdog+0x10>
+		bb |= (1<<5);
+  76:	90 62       	ori	r25, 0x20	; 32
+	}
+	
+	MCUSR &= ~(1<<WDRF);
+  78:	84 b7       	in	r24, 0x34	; 52
+  7a:	87 7f       	andi	r24, 0xF7	; 247
+  7c:	84 bf       	out	0x34, r24	; 52
+	// Start timed sequence
+	WDTCSR |= (1<<WDCE) | (1<<WDE);
+  7e:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__EEPROM_REGION_LENGTH__+0x7f0060>
+  82:	88 61       	ori	r24, 0x18	; 24
+  84:	80 93 60 00 	sts	0x0060, r24	; 0x800060 <__EEPROM_REGION_LENGTH__+0x7f0060>
+	// Set new watchdog timeout value
+	WDTCSR = bb | (1<<WDIE);
+  88:	90 64       	ori	r25, 0x40	; 64
+  8a:	90 93 60 00 	sts	0x0060, r25	; 0x800060 <__EEPROM_REGION_LENGTH__+0x7f0060>
+  8e:	08 95       	ret
+
+00000090 <turn_off_watchdog>:
+}
+
+// Turn off the Watchdog
+void turn_off_watchdog(void) {
+	cli(); // Turn interrupts off
+  90:	f8 94       	cli
+	MCUSR &= ~(1<<WDRF);
+  92:	84 b7       	in	r24, 0x34	; 52
+  94:	87 7f       	andi	r24, 0xF7	; 247
+  96:	84 bf       	out	0x34, r24	; 52
+	WDTCSR |= (1<<WDCE) | (1<<WDE);
+  98:	e0 e6       	ldi	r30, 0x60	; 96
+  9a:	f0 e0       	ldi	r31, 0x00	; 0
+  9c:	80 81       	ld	r24, Z
+  9e:	88 61       	ori	r24, 0x18	; 24
+  a0:	80 83       	st	Z, r24
+	WDTCSR = 0;
+  a2:	10 82       	st	Z, r1
+	sei(); // Turn interrupts back on
+  a4:	78 94       	sei
+  a6:	08 95       	ret
+
+000000a8 <watchdog_sleep>:
+}
+
+// Watchdog sleep function - setup, sleep and turn off
+void watchdog_sleep(uint8_t timeout) { 
+	setup_watchdog(timeout);
+  a8:	df df       	rcall	.-66     	; 0x68 <setup_watchdog>
+	system_sleep();
+  aa:	d2 df       	rcall	.-92     	; 0x50 <system_sleep>
+	turn_off_watchdog();
+  ac:	f1 cf       	rjmp	.-30     	; 0x90 <turn_off_watchdog>
+
+000000ae <adc_read>:
+}
+
+// Read the ADC
+int adc_read(uint8_t pin, uint8_t reference) {
+  ae:	8f 70       	andi	r24, 0x0F	; 15
+	uint8_t low, high;
+	
+	// Set the analog reference (high two bits of ADMUX) and select the channel (low 4 bits)
+	if (reference == REF_1_1V) {
+  b0:	61 11       	cpse	r22, r1
+		ADMUX = (pin & 0x0F); // 1.1V reference
+	}
+	else {
+		ADMUX = (1<<REFS0) | (pin & 0x0F); // AVCC Ref
+  b2:	80 64       	ori	r24, 0x40	; 64
+  b4:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__EEPROM_REGION_LENGTH__+0x7f007c>
+	}
+	
+	set_sleep_mode(SLEEP_MODE_ADC); // Set sleep mode ADC
+  b8:	83 b7       	in	r24, 0x33	; 51
+  ba:	89 7f       	andi	r24, 0xF9	; 249
+  bc:	82 60       	ori	r24, 0x02	; 2
+  be:	83 bf       	out	0x33, r24	; 51
+	sleep_mode(); // System sleeps here
+  c0:	83 b7       	in	r24, 0x33	; 51
+  c2:	81 60       	ori	r24, 0x01	; 1
+  c4:	83 bf       	out	0x33, r24	; 51
+  c6:	88 95       	sleep
+  c8:	83 b7       	in	r24, 0x33	; 51
+  ca:	8e 7f       	andi	r24, 0xFE	; 254
+  cc:	83 bf       	out	0x33, r24	; 51
+	
+	// Read ADCL first
+	low = ADCL;
+  ce:	80 91 78 00 	lds	r24, 0x0078	; 0x800078 <__EEPROM_REGION_LENGTH__+0x7f0078>
+	high = ADCH;
+  d2:	20 91 79 00 	lds	r18, 0x0079	; 0x800079 <__EEPROM_REGION_LENGTH__+0x7f0079>
+	
+	// combine the two bytes
+	return (high << 8) | low;
+  d6:	90 e0       	ldi	r25, 0x00	; 0
+}
+  d8:	92 2b       	or	r25, r18
+  da:	08 95       	ret
+
+000000dc <setup>:
+
+// Setup
+void setup(void) {
+	// Turn on pull ups
+	PORTB |= (1<<PB2) | (1<<PB3) | (1<<PB4) | (1<<PB5) | (1<<PB6); 
+  dc:	85 b1       	in	r24, 0x05	; 5
+  de:	8c 67       	ori	r24, 0x7C	; 124
+  e0:	85 b9       	out	0x05, r24	; 5
+	PORTC |= (1<<PC0) | (1<<PC1) | (1<<PC2) | (1<<PC4) | (1<<PC5) | (1<<PC6) | (1<<PC7); 
+  e2:	88 b1       	in	r24, 0x08	; 8
+  e4:	87 6f       	ori	r24, 0xF7	; 247
+  e6:	88 b9       	out	0x08, r24	; 8
+	
+	// Setup outputs
+	DDRD |= (1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8);
+  e8:	8a b1       	in	r24, 0x0a	; 10
+  ea:	8f 6e       	ori	r24, 0xEF	; 239
+  ec:	8a b9       	out	0x0a, r24	; 10
+	DDRB |= (1<<LED5)  | (1<<LED9) | (1<<LED10);
+  ee:	84 b1       	in	r24, 0x04	; 4
+  f0:	83 68       	ori	r24, 0x83	; 131
+  f2:	84 b9       	out	0x04, r24	; 4
+	
+	// Blink LEDs
+	PORTD |= (1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8);
+  f4:	8b b1       	in	r24, 0x0b	; 11
+  f6:	8f 6e       	ori	r24, 0xEF	; 239
+  f8:	8b b9       	out	0x0b, r24	; 11
+	PORTB |= (1<<LED5) | (1<<LED9) | (1<<LED10);
+  fa:	85 b1       	in	r24, 0x05	; 5
+  fc:	83 68       	ori	r24, 0x83	; 131
+  fe:	85 b9       	out	0x05, r24	; 5
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 100:	8f e4       	ldi	r24, 0x4F	; 79
+ 102:	93 ec       	ldi	r25, 0xC3	; 195
+ 104:	01 97       	sbiw	r24, 0x01	; 1
+ 106:	f1 f7       	brne	.-4      	; 0x104 <setup+0x28>
+ 108:	00 c0       	rjmp	.+0      	; 0x10a <setup+0x2e>
+ 10a:	00 00       	nop
+	_delay_ms(200);
+	PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
+ 10c:	8b b1       	in	r24, 0x0b	; 11
+ 10e:	80 71       	andi	r24, 0x10	; 16
+ 110:	8b b9       	out	0x0b, r24	; 11
+	PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
+ 112:	85 b1       	in	r24, 0x05	; 5
+ 114:	8c 77       	andi	r24, 0x7C	; 124
+ 116:	85 b9       	out	0x05, r24	; 5
+	
+	// Set ADC prescale factor to 8
+	// 1 MHz / 8 = 125 KHz, inside the desired 50-200 KHz range.
+	sbi(ADCSRA, ADPS1);
+ 118:	ea e7       	ldi	r30, 0x7A	; 122
+ 11a:	f0 e0       	ldi	r31, 0x00	; 0
+ 11c:	80 81       	ld	r24, Z
+ 11e:	82 60       	ori	r24, 0x02	; 2
+ 120:	80 83       	st	Z, r24
+	sbi(ADCSRA, ADPS0);
+ 122:	80 81       	ld	r24, Z
+ 124:	81 60       	ori	r24, 0x01	; 1
+ 126:	80 83       	st	Z, r24
+	
+	// Enable ADC/interrupt
+	sbi(ADCSRA, ADEN);
+ 128:	80 81       	ld	r24, Z
+ 12a:	80 68       	ori	r24, 0x80	; 128
+ 12c:	80 83       	st	Z, r24
+	sbi(ADCSRA, ADIE);
+ 12e:	80 81       	ld	r24, Z
+ 130:	88 60       	ori	r24, 0x08	; 8
+ 132:	80 83       	st	Z, r24
+	
+	// Enable pin change interrupt on PD4
+	//sbi(PCICR, PCIE2);
+	sbi(PCMSK2, PCINT20);
+ 134:	ed e6       	ldi	r30, 0x6D	; 109
+ 136:	f0 e0       	ldi	r31, 0x00	; 0
+ 138:	80 81       	ld	r24, Z
+ 13a:	80 61       	ori	r24, 0x10	; 16
+ 13c:	80 83       	st	Z, r24
+	
+	sei(); // Turn on interrupts
+ 13e:	78 94       	sei
+ 140:	08 95       	ret
+
+00000142 <__vector_16>:
+	}
+	
+	return 0;
+}
+
+EMPTY_INTERRUPT(ADC_vect);
+ 142:	18 95       	reti
+
+00000144 <__vector_3>:
+ISR(PCINT0_vect) {
+ 144:	1f 92       	push	r1
+ 146:	0f 92       	push	r0
+ 148:	0f b6       	in	r0, 0x3f	; 63
+ 14a:	0f 92       	push	r0
+ 14c:	11 24       	eor	r1, r1
+ 14e:	8f 93       	push	r24
+ 150:	9f 93       	push	r25
+ 152:	83 ed       	ldi	r24, 0xD3	; 211
+ 154:	90 e3       	ldi	r25, 0x30	; 48
+ 156:	01 97       	sbiw	r24, 0x01	; 1
+ 158:	f1 f7       	brne	.-4      	; 0x156 <__vector_3+0x12>
+ 15a:	00 c0       	rjmp	.+0      	; 0x15c <__vector_3+0x18>
+ 15c:	00 00       	nop
+	_delay_ms(50);
+}
+ 15e:	9f 91       	pop	r25
+ 160:	8f 91       	pop	r24
+ 162:	0f 90       	pop	r0
+ 164:	0f be       	out	0x3f, r0	; 63
+ 166:	0f 90       	pop	r0
+ 168:	1f 90       	pop	r1
+ 16a:	18 95       	reti
+
+0000016c <main>:
+#include "setup.c"
+
+uint8_t volatile powerState = 1;
+
+int main (void) {
+	setup();
+ 16c:	b7 df       	rcall	.-146    	; 0xdc <setup>
+		uint16_t batteryVoltageLevel = 0;
+		for (uint8_t x = 0; x < 5; x++) {
+			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+			_delay_ms(5);
+		}
+		batteryVoltageLevel = batteryVoltageLevel / 5;
+ 16e:	85 e0       	ldi	r24, 0x05	; 5
+ 170:	e8 2e       	mov	r14, r24
+ 172:	f1 2c       	mov	r15, r1
+int main (void) {
+	setup();
+	
+	while(1) {
+		// GBA power on pin low, go to sleep
+		if (!(PIND & (1<<GBA_POWER_ON))) {
+ 174:	4c 99       	sbic	0x09, 4	; 9
+ 176:	31 c0       	rjmp	.+98     	; 0x1da <main+0x6e>
+ 178:	83 ed       	ldi	r24, 0xD3	; 211
+ 17a:	90 e3       	ldi	r25, 0x30	; 48
+ 17c:	01 97       	sbiw	r24, 0x01	; 1
+ 17e:	f1 f7       	brne	.-4      	; 0x17c <main+0x10>
+ 180:	00 c0       	rjmp	.+0      	; 0x182 <main+0x16>
+ 182:	00 00       	nop
+			_delay_ms(50);
+			
+			// Turn off LEDs
+			PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
+ 184:	8b b1       	in	r24, 0x0b	; 11
+ 186:	80 71       	andi	r24, 0x10	; 16
+ 188:	8b b9       	out	0x0b, r24	; 11
+			PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
+ 18a:	85 b1       	in	r24, 0x05	; 5
+ 18c:	8c 77       	andi	r24, 0x7C	; 124
+ 18e:	85 b9       	out	0x05, r24	; 5
+			
+			// Disable ADC/interrupt
+			cbi(ADCSRA, ADEN);
+ 190:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 194:	8f 77       	andi	r24, 0x7F	; 127
+ 196:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+			cbi(ADCSRA, ADIE);
+ 19a:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 19e:	87 7f       	andi	r24, 0xF7	; 247
+ 1a0:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+			
+			// Enable pin change interrupt
+			sbi(PCICR, PCIE2);
+ 1a4:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 1a8:	84 60       	ori	r24, 0x04	; 4
+ 1aa:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+			system_sleep();
+ 1ae:	50 df       	rcall	.-352    	; 0x50 <system_sleep>
+			
+			// Enable ADC/interrupt
+			sbi(ADCSRA, ADEN);
+ 1b0:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 1b4:	80 68       	ori	r24, 0x80	; 128
+ 1b6:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+			sbi(ADCSRA, ADIE);
+ 1ba:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 1be:	88 60       	ori	r24, 0x08	; 8
+ 1c0:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+			
+			// Disable pin change interrupt
+			cbi(PCICR, PCIE2);
+ 1c4:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 1c8:	8b 7f       	andi	r24, 0xFB	; 251
+ 1ca:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 1ce:	83 ec       	ldi	r24, 0xC3	; 195
+ 1d0:	99 e0       	ldi	r25, 0x09	; 9
+ 1d2:	01 97       	sbiw	r24, 0x01	; 1
+ 1d4:	f1 f7       	brne	.-4      	; 0x1d2 <main+0x66>
+ 1d6:	00 c0       	rjmp	.+0      	; 0x1d8 <main+0x6c>
+ 1d8:	00 00       	nop
+#include <avr/sleep.h>
+#include "setup.c"
+
+uint8_t volatile powerState = 1;
+
+int main (void) {
+ 1da:	15 e0       	ldi	r17, 0x05	; 5
+ 1dc:	c0 e0       	ldi	r28, 0x00	; 0
+ 1de:	d0 e0       	ldi	r29, 0x00	; 0
+		
+		
+		// 5 samples over 25ms
+		uint16_t batteryVoltageLevel = 0;
+		for (uint8_t x = 0; x < 5; x++) {
+			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+ 1e0:	60 e0       	ldi	r22, 0x00	; 0
+ 1e2:	83 e0       	ldi	r24, 0x03	; 3
+ 1e4:	64 df       	rcall	.-312    	; 0xae <adc_read>
+ 1e6:	c8 0f       	add	r28, r24
+ 1e8:	d9 1f       	adc	r29, r25
+ 1ea:	81 ee       	ldi	r24, 0xE1	; 225
+ 1ec:	94 e0       	ldi	r25, 0x04	; 4
+ 1ee:	01 97       	sbiw	r24, 0x01	; 1
+ 1f0:	f1 f7       	brne	.-4      	; 0x1ee <main+0x82>
+ 1f2:	00 c0       	rjmp	.+0      	; 0x1f4 <main+0x88>
+ 1f4:	00 00       	nop
+ 1f6:	11 50       	subi	r17, 0x01	; 1
+		}
+		
+		
+		// 5 samples over 25ms
+		uint16_t batteryVoltageLevel = 0;
+		for (uint8_t x = 0; x < 5; x++) {
+ 1f8:	99 f7       	brne	.-26     	; 0x1e0 <main+0x74>
+			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+			_delay_ms(5);
+		}
+		batteryVoltageLevel = batteryVoltageLevel / 5;
+ 1fa:	ce 01       	movw	r24, r28
+ 1fc:	b7 01       	movw	r22, r14
+ 1fe:	56 d0       	rcall	.+172    	; 0x2ac <__udivmodhi4>
+		
+		
+		// Red
+		if (batteryVoltageLevel >= 675) {
+ 200:	63 3a       	cpi	r22, 0xA3	; 163
+ 202:	92 e0       	ldi	r25, 0x02	; 2
+ 204:	79 07       	cpc	r23, r25
+ 206:	30 f0       	brcs	.+12     	; 0x214 <__stack+0x15>
+			PORTD |= (1<<LED1);
+ 208:	58 9a       	sbi	0x0b, 0	; 11
+		}
+		else {
+			PORTD &= ~(1<<LED1);
+		}
+		if (batteryVoltageLevel >= 720) {
+ 20a:	60 3d       	cpi	r22, 0xD0	; 208
+ 20c:	22 e0       	ldi	r18, 0x02	; 2
+ 20e:	72 07       	cpc	r23, r18
+ 210:	18 f4       	brcc	.+6      	; 0x218 <__stack+0x19>
+ 212:	08 c0       	rjmp	.+16     	; 0x224 <__stack+0x25>
+		// Red
+		if (batteryVoltageLevel >= 675) {
+			PORTD |= (1<<LED1);
+		}
+		else {
+			PORTD &= ~(1<<LED1);
+ 214:	58 98       	cbi	0x0b, 0	; 11
+ 216:	06 c0       	rjmp	.+12     	; 0x224 <__stack+0x25>
+		}
+		if (batteryVoltageLevel >= 720) {
+			PORTD |= (1<<LED2);
+ 218:	59 9a       	sbi	0x0b, 1	; 11
+		}
+		else {
+			PORTD &= ~(1<<LED2);
+		}
+		if (batteryVoltageLevel >= 750) {
+ 21a:	6e 3e       	cpi	r22, 0xEE	; 238
+ 21c:	82 e0       	ldi	r24, 0x02	; 2
+ 21e:	78 07       	cpc	r23, r24
+ 220:	18 f4       	brcc	.+6      	; 0x228 <__stack+0x29>
+ 222:	08 c0       	rjmp	.+16     	; 0x234 <__stack+0x35>
+		}
+		if (batteryVoltageLevel >= 720) {
+			PORTD |= (1<<LED2);
+		}
+		else {
+			PORTD &= ~(1<<LED2);
+ 224:	59 98       	cbi	0x0b, 1	; 11
+ 226:	06 c0       	rjmp	.+12     	; 0x234 <__stack+0x35>
+		}
+		if (batteryVoltageLevel >= 750) {
+			PORTD |= (1<<LED3);
+ 228:	5a 9a       	sbi	0x0b, 2	; 11
+		else {
+			PORTD &= ~(1<<LED3);
+		}
+		
+		// Blue
+		if (batteryVoltageLevel >= 825) {
+ 22a:	69 33       	cpi	r22, 0x39	; 57
+ 22c:	93 e0       	ldi	r25, 0x03	; 3
+ 22e:	79 07       	cpc	r23, r25
+ 230:	18 f4       	brcc	.+6      	; 0x238 <__stack+0x39>
+ 232:	08 c0       	rjmp	.+16     	; 0x244 <__stack+0x45>
+		}
+		if (batteryVoltageLevel >= 750) {
+			PORTD |= (1<<LED3);
+		}
+		else {
+			PORTD &= ~(1<<LED3);
+ 234:	5a 98       	cbi	0x0b, 2	; 11
+ 236:	06 c0       	rjmp	.+12     	; 0x244 <__stack+0x45>
+		}
+		
+		// Blue
+		if (batteryVoltageLevel >= 825) {
+			PORTD |= (1<<LED4);
+ 238:	5b 9a       	sbi	0x0b, 3	; 11
+		}
+		else {
+			PORTD &= ~(1<<LED4);
+		}
+		if (batteryVoltageLevel >= 850) {
+ 23a:	62 35       	cpi	r22, 0x52	; 82
+ 23c:	23 e0       	ldi	r18, 0x03	; 3
+ 23e:	72 07       	cpc	r23, r18
+ 240:	18 f4       	brcc	.+6      	; 0x248 <__stack+0x49>
+ 242:	08 c0       	rjmp	.+16     	; 0x254 <__stack+0x55>
+		// Blue
+		if (batteryVoltageLevel >= 825) {
+			PORTD |= (1<<LED4);
+		}
+		else {
+			PORTD &= ~(1<<LED4);
+ 244:	5b 98       	cbi	0x0b, 3	; 11
+ 246:	06 c0       	rjmp	.+12     	; 0x254 <__stack+0x55>
+		}
+		if (batteryVoltageLevel >= 850) {
+			PORTB |= (1<<LED5);
+ 248:	2f 9a       	sbi	0x05, 7	; 5
+		}
+		else {
+			PORTB &= ~(1<<LED5);
+		}
+		if (batteryVoltageLevel >= 875) {
+ 24a:	6b 36       	cpi	r22, 0x6B	; 107
+ 24c:	83 e0       	ldi	r24, 0x03	; 3
+ 24e:	78 07       	cpc	r23, r24
+ 250:	18 f4       	brcc	.+6      	; 0x258 <__stack+0x59>
+ 252:	08 c0       	rjmp	.+16     	; 0x264 <__stack+0x65>
+		}
+		if (batteryVoltageLevel >= 850) {
+			PORTB |= (1<<LED5);
+		}
+		else {
+			PORTB &= ~(1<<LED5);
+ 254:	2f 98       	cbi	0x05, 7	; 5
+ 256:	06 c0       	rjmp	.+12     	; 0x264 <__stack+0x65>
+		}
+		if (batteryVoltageLevel >= 875) {
+			PORTD |= (1<<LED6);
+ 258:	5d 9a       	sbi	0x0b, 5	; 11
+		}
+		else {
+			PORTD &= ~(1<<LED6);
+		}
+		if (batteryVoltageLevel >= 890) {
+ 25a:	6a 37       	cpi	r22, 0x7A	; 122
+ 25c:	93 e0       	ldi	r25, 0x03	; 3
+ 25e:	79 07       	cpc	r23, r25
+ 260:	18 f4       	brcc	.+6      	; 0x268 <__stack+0x69>
+ 262:	08 c0       	rjmp	.+16     	; 0x274 <__stack+0x75>
+		}
+		if (batteryVoltageLevel >= 875) {
+			PORTD |= (1<<LED6);
+		}
+		else {
+			PORTD &= ~(1<<LED6);
+ 264:	5d 98       	cbi	0x0b, 5	; 11
+ 266:	06 c0       	rjmp	.+12     	; 0x274 <__stack+0x75>
+		}
+		if (batteryVoltageLevel >= 890) {
+			PORTD |= (1<<LED7);
+ 268:	5e 9a       	sbi	0x0b, 6	; 11
+		else {
+			PORTD &= ~(1<<LED7);
+		}
+		
+		// Green
+		if (batteryVoltageLevel >= 910) {
+ 26a:	6e 38       	cpi	r22, 0x8E	; 142
+ 26c:	23 e0       	ldi	r18, 0x03	; 3
+ 26e:	72 07       	cpc	r23, r18
+ 270:	18 f4       	brcc	.+6      	; 0x278 <__stack+0x79>
+ 272:	08 c0       	rjmp	.+16     	; 0x284 <__stack+0x85>
+		}
+		if (batteryVoltageLevel >= 890) {
+			PORTD |= (1<<LED7);
+		}
+		else {
+			PORTD &= ~(1<<LED7);
+ 274:	5e 98       	cbi	0x0b, 6	; 11
+ 276:	06 c0       	rjmp	.+12     	; 0x284 <__stack+0x85>
+		}
+		
+		// Green
+		if (batteryVoltageLevel >= 910) {
+			PORTD |= (1<<LED8);
+ 278:	5f 9a       	sbi	0x0b, 7	; 11
+		}
+		else {
+			PORTD &= ~(1<<LED8);
+		}
+		if (batteryVoltageLevel >= 920) {
+ 27a:	68 39       	cpi	r22, 0x98	; 152
+ 27c:	83 e0       	ldi	r24, 0x03	; 3
+ 27e:	78 07       	cpc	r23, r24
+ 280:	18 f4       	brcc	.+6      	; 0x288 <__stack+0x89>
+ 282:	08 c0       	rjmp	.+16     	; 0x294 <__stack+0x95>
+		// Green
+		if (batteryVoltageLevel >= 910) {
+			PORTD |= (1<<LED8);
+		}
+		else {
+			PORTD &= ~(1<<LED8);
+ 284:	5f 98       	cbi	0x0b, 7	; 11
+ 286:	06 c0       	rjmp	.+12     	; 0x294 <__stack+0x95>
+		}
+		if (batteryVoltageLevel >= 920) {
+			PORTB |= (1<<LED9);
+ 288:	28 9a       	sbi	0x05, 0	; 5
+		}
+		else {
+			PORTB &= ~(1<<LED9);
+		}
+		if (batteryVoltageLevel >= 930) {
+ 28a:	62 3a       	cpi	r22, 0xA2	; 162
+ 28c:	73 40       	sbci	r23, 0x03	; 3
+ 28e:	18 f0       	brcs	.+6      	; 0x296 <__stack+0x97>
+			PORTB |= (1<<LED10);
+ 290:	29 9a       	sbi	0x05, 1	; 5
+ 292:	02 c0       	rjmp	.+4      	; 0x298 <__stack+0x99>
+		}
+		if (batteryVoltageLevel >= 920) {
+			PORTB |= (1<<LED9);
+		}
+		else {
+			PORTB &= ~(1<<LED9);
+ 294:	28 98       	cbi	0x05, 0	; 5
+		}
+		if (batteryVoltageLevel >= 930) {
+			PORTB |= (1<<LED10);
+		}
+		else {
+			PORTB &= ~(1<<LED10);
+ 296:	29 98       	cbi	0x05, 1	; 5
+ 298:	2f e3       	ldi	r18, 0x3F	; 63
+ 29a:	8d e0       	ldi	r24, 0x0D	; 13
+ 29c:	93 e0       	ldi	r25, 0x03	; 3
+ 29e:	21 50       	subi	r18, 0x01	; 1
+ 2a0:	80 40       	sbci	r24, 0x00	; 0
+ 2a2:	90 40       	sbci	r25, 0x00	; 0
+ 2a4:	e1 f7       	brne	.-8      	; 0x29e <__stack+0x9f>
+ 2a6:	00 c0       	rjmp	.+0      	; 0x2a8 <__stack+0xa9>
+ 2a8:	00 00       	nop
+ 2aa:	64 cf       	rjmp	.-312    	; 0x174 <main+0x8>
+
+000002ac <__udivmodhi4>:
+ 2ac:	aa 1b       	sub	r26, r26
+ 2ae:	bb 1b       	sub	r27, r27
+ 2b0:	51 e1       	ldi	r21, 0x11	; 17
+ 2b2:	07 c0       	rjmp	.+14     	; 0x2c2 <__udivmodhi4_ep>
+
+000002b4 <__udivmodhi4_loop>:
+ 2b4:	aa 1f       	adc	r26, r26
+ 2b6:	bb 1f       	adc	r27, r27
+ 2b8:	a6 17       	cp	r26, r22
+ 2ba:	b7 07       	cpc	r27, r23
+ 2bc:	10 f0       	brcs	.+4      	; 0x2c2 <__udivmodhi4_ep>
+ 2be:	a6 1b       	sub	r26, r22
+ 2c0:	b7 0b       	sbc	r27, r23
+
+000002c2 <__udivmodhi4_ep>:
+ 2c2:	88 1f       	adc	r24, r24
+ 2c4:	99 1f       	adc	r25, r25
+ 2c6:	5a 95       	dec	r21
+ 2c8:	a9 f7       	brne	.-22     	; 0x2b4 <__udivmodhi4_loop>
+ 2ca:	80 95       	com	r24
+ 2cc:	90 95       	com	r25
+ 2ce:	bc 01       	movw	r22, r24
+ 2d0:	cd 01       	movw	r24, r26
+ 2d2:	08 95       	ret
+
+000002d4 <_exit>:
+ 2d4:	f8 94       	cli
+
+000002d6 <__stop_program>:
+ 2d6:	ff cf       	rjmp	.-2      	; 0x2d6 <__stop_program>
