@@ -1,5 +1,5 @@
 /*
- GBA LiPo Battery Gauge
+ LiPo Battery Gauge
  Version: 1.0
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
@@ -16,14 +16,12 @@
 #include <avr/sleep.h>
 #include "setup.c"
 
-uint8_t volatile powerState = 1;
-
 int main (void) {
 	setup();
 	
 	while(1) {
-		// GBA power on pin low, go to sleep
-		if (!(PIND & (1<<GBA_POWER_ON))) {
+		// Power pin (PD4) low, go to sleep
+		if (!(PIND & (1<<POWER_ON_PIN))) {
 			_delay_ms(50);
 			
 			// Turn off LEDs

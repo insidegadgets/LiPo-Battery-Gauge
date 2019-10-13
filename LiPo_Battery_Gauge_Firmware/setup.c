@@ -1,5 +1,5 @@
 /*
- GBA LiPo Battery Gauge
+ LiPo Battery Gauge
  Version: 1.0
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
@@ -35,7 +35,7 @@
 #define T4S 8
 #define T8S 9
 
-#define GBA_POWER_ON PD4
+#define POWER_ON_PIN PD4
 #define batteryADCPin 3
 #define LED1 PD0
 #define LED2 PD1
@@ -127,11 +127,11 @@ void setup(void) {
 	DDRB |= (1<<LED5)  | (1<<LED9) | (1<<LED10);
 	
 	// Blink LEDs
-	PORTD |= (1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8);
-	PORTB |= (1<<LED5) | (1<<LED9) | (1<<LED10);
-	_delay_ms(200);
-	PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
-	PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
+	//PORTD |= (1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8);
+	//PORTB |= (1<<LED5) | (1<<LED9) | (1<<LED10);
+	//_delay_ms(200);
+	//PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
+	//PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
 	
 	// Set ADC prescale factor to 8
 	// 1 MHz / 8 = 125 KHz, inside the desired 50-200 KHz range.
@@ -143,7 +143,6 @@ void setup(void) {
 	sbi(ADCSRA, ADIE);
 	
 	// Enable pin change interrupt on PD4
-	//sbi(PCICR, PCIE2);
 	sbi(PCMSK2, PCINT20);
 	
 	sei(); // Turn on interrupts
