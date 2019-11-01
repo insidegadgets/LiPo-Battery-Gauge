@@ -963,126 +963,128 @@
  557               		.loc 3 20 0
  558 0000 00D0      		rcall setup
  559               	.LVL32:
-  21:main.c        **** 	animate_leds(); // Animate LEDs at start
- 560               		.loc 3 21 0
- 561 0002 00D0      		rcall animate_leds
- 562               	.LVL33:
- 563               	.LBB58:
-  22:main.c        **** 	
-  23:main.c        **** 	while(1) {
-  24:main.c        **** 		// Power pin (PD4) low, go to sleep
-  25:main.c        **** 		if (!(PIND & (1<<POWER_ON_PIN))) {
-  26:main.c        **** 			_delay_ms(200);
-  27:main.c        **** 			
-  28:main.c        **** 			// Turn off LEDs
-  29:main.c        **** 			PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
-  30:main.c        **** 			PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
-  31:main.c        **** 			
-  32:main.c        **** 			// Disable ADC/interrupt
-  33:main.c        **** 			cbi(ADCSRA, ADEN);
-  34:main.c        **** 			cbi(ADCSRA, ADIE);
-  35:main.c        **** 			
-  36:main.c        **** 			// Enable pin change interrupt
-  37:main.c        **** 			sbi(PCICR, PCIE2);
-  38:main.c        **** 			system_sleep();
-  39:main.c        **** 			
-  40:main.c        **** 			// Enable ADC/interrupt
-  41:main.c        **** 			sbi(ADCSRA, ADEN);
-  42:main.c        **** 			sbi(ADCSRA, ADIE);
-  43:main.c        **** 			
-  44:main.c        **** 			// Disable pin change interrupt
-  45:main.c        **** 			cbi(PCICR, PCIE2);
-  46:main.c        **** 			_delay_ms(10);
-  47:main.c        **** 		}
-  48:main.c        **** 		
-  49:main.c        **** 		
-  50:main.c        **** 		// 5 samples over 25ms
-  51:main.c        **** 		uint16_t batteryVoltageLevel = 0;
-  52:main.c        **** 		for (uint8_t x = 0; x < 5; x++) {
-  53:main.c        **** 			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
-  54:main.c        **** 			_delay_ms(5);
-  55:main.c        **** 		}
-  56:main.c        **** 		batteryVoltageLevel = batteryVoltageLevel / 5;
- 564               		.loc 3 56 0
- 565 0004 85E0      		ldi r24,lo8(5)
- 566 0006 E82E      		mov r14,r24
- 567 0008 F12C      		mov r15,__zero_reg__
- 568               	.L49:
+ 560               	.LBB58:
+  21:main.c        **** 	
+  22:main.c        **** 	while(1) {
+  23:main.c        **** 		// Power pin (PD4) low, go to sleep
+  24:main.c        **** 		if (!(PIND & (1<<POWER_ON_PIN))) {
   25:main.c        **** 			_delay_ms(200);
- 569               		.loc 3 25 0
- 570 000a 4C99      		sbic 0x9,4
- 571 000c 00C0      		rjmp .L27
- 572               	.LVL34:
- 573               	.LBB59:
- 574               	.LBB60:
- 575               		.loc 2 187 0
- 576 000e 8FE4      		ldi r24,lo8(-15537)
- 577 0010 93EC      		ldi r25,hi8(-15537)
- 578 0012 0197      	1:	sbiw r24,1
- 579 0014 01F4      		brne 1b
- 580 0016 00C0      		rjmp .
- 581 0018 0000      		nop
- 582               	.LVL35:
- 583               	.LBE60:
- 584               	.LBE59:
+  26:main.c        **** 			
+  27:main.c        **** 			// Turn off LEDs
+  28:main.c        **** 			PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
   29:main.c        **** 			PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
- 585               		.loc 3 29 0
- 586 001a 8BB1      		in r24,0xb
- 587 001c 8071      		andi r24,lo8(16)
- 588 001e 8BB9      		out 0xb,r24
   30:main.c        **** 			
- 589               		.loc 3 30 0
- 590 0020 85B1      		in r24,0x5
- 591 0022 8C77      		andi r24,lo8(124)
- 592 0024 85B9      		out 0x5,r24
+  31:main.c        **** 			// Disable ADC/interrupt
+  32:main.c        **** 			cbi(ADCSRA, ADEN);
   33:main.c        **** 			cbi(ADCSRA, ADIE);
- 593               		.loc 3 33 0
- 594 0026 8091 7A00 		lds r24,122
- 595 002a 8F77      		andi r24,lo8(127)
- 596 002c 8093 7A00 		sts 122,r24
   34:main.c        **** 			
- 597               		.loc 3 34 0
- 598 0030 8091 7A00 		lds r24,122
- 599 0034 877F      		andi r24,lo8(-9)
- 600 0036 8093 7A00 		sts 122,r24
+  35:main.c        **** 			// Enable pin change interrupt
+  36:main.c        **** 			sbi(PCICR, PCIE2);
   37:main.c        **** 			system_sleep();
- 601               		.loc 3 37 0
- 602 003a 8091 6800 		lds r24,104
- 603 003e 8460      		ori r24,lo8(4)
- 604 0040 8093 6800 		sts 104,r24
   38:main.c        **** 			
- 605               		.loc 3 38 0
- 606 0044 00D0      		rcall system_sleep
- 607               	.LVL36:
+  39:main.c        **** 			// Enable ADC/interrupt
+  40:main.c        **** 			sbi(ADCSRA, ADEN);
   41:main.c        **** 			sbi(ADCSRA, ADIE);
- 608               		.loc 3 41 0
- 609 0046 8091 7A00 		lds r24,122
- 610 004a 8068      		ori r24,lo8(-128)
- 611 004c 8093 7A00 		sts 122,r24
   42:main.c        **** 			
- 612               		.loc 3 42 0
- 613 0050 8091 7A00 		lds r24,122
- 614 0054 8860      		ori r24,lo8(8)
- 615 0056 8093 7A00 		sts 122,r24
-  45:main.c        **** 			_delay_ms(10);
- 616               		.loc 3 45 0
- 617 005a 8091 6800 		lds r24,104
- 618 005e 8B7F      		andi r24,lo8(-5)
- 619 0060 8093 6800 		sts 104,r24
- 620               	.LVL37:
- 621               	.LBB61:
- 622               	.LBB62:
- 623               		.loc 2 187 0
- 624 0064 83EC      		ldi r24,lo8(2499)
- 625 0066 99E0      		ldi r25,hi8(2499)
- 626 0068 0197      	1:	sbiw r24,1
- 627 006a 01F4      		brne 1b
- 628 006c 00C0      		rjmp .
- 629 006e 0000      		nop
- 630               	.LVL38:
- 631               	.L27:
- 632               	.LBE62:
- 633               	.LBE61:
+  43:main.c        **** 			// Disable pin change interrupt
+  44:main.c        **** 			cbi(PCICR, PCIE2);
+  45:main.c        **** 			_delay_ms(100);
+  46:main.c        **** 			
+  47:main.c        **** 			animate_leds(); // Animate LEDs at start
+  48:main.c        **** 		}
+  49:main.c        **** 		
+  50:main.c        **** 		
+  51:main.c        **** 		// 5 samples over 25ms
+  52:main.c        **** 		uint16_t batteryVoltageLevel = 0;
+  53:main.c        **** 		for (uint8_t x = 0; x < 5; x++) {
+  54:main.c        **** 			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+  55:main.c        **** 			_delay_ms(5);
+  56:main.c        **** 		}
+  57:main.c        **** 		batteryVoltageLevel = batteryVoltageLevel / 5;
+ 561               		.loc 3 57 0
+ 562 0002 85E0      		ldi r24,lo8(5)
+ 563 0004 E82E      		mov r14,r24
+ 564 0006 F12C      		mov r15,__zero_reg__
+ 565               	.L49:
+  24:main.c        **** 			_delay_ms(200);
+ 566               		.loc 3 24 0
+ 567 0008 4C99      		sbic 0x9,4
+ 568 000a 00C0      		rjmp .L27
+ 569               	.LVL33:
+ 570               	.LBB59:
+ 571               	.LBB60:
+ 572               		.loc 2 187 0
+ 573 000c 8FE4      		ldi r24,lo8(-15537)
+ 574 000e 93EC      		ldi r25,hi8(-15537)
+ 575 0010 0197      	1:	sbiw r24,1
+ 576 0012 01F4      		brne 1b
+ 577 0014 00C0      		rjmp .
+ 578 0016 0000      		nop
+ 579               	.LVL34:
+ 580               	.LBE60:
+ 581               	.LBE59:
+  28:main.c        **** 			PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
+ 582               		.loc 3 28 0
+ 583 0018 8BB1      		in r24,0xb
+ 584 001a 8071      		andi r24,lo8(16)
+ 585 001c 8BB9      		out 0xb,r24
+  29:main.c        **** 			
+ 586               		.loc 3 29 0
+ 587 001e 85B1      		in r24,0x5
+ 588 0020 8C77      		andi r24,lo8(124)
+ 589 0022 85B9      		out 0x5,r24
+  32:main.c        **** 			cbi(ADCSRA, ADIE);
+ 590               		.loc 3 32 0
+ 591 0024 8091 7A00 		lds r24,122
+ 592 0028 8F77      		andi r24,lo8(127)
+ 593 002a 8093 7A00 		sts 122,r24
+  33:main.c        **** 			
+ 594               		.loc 3 33 0
+ 595 002e 8091 7A00 		lds r24,122
+ 596 0032 877F      		andi r24,lo8(-9)
+ 597 0034 8093 7A00 		sts 122,r24
+  36:main.c        **** 			system_sleep();
+ 598               		.loc 3 36 0
+ 599 0038 8091 6800 		lds r24,104
+ 600 003c 8460      		ori r24,lo8(4)
+ 601 003e 8093 6800 		sts 104,r24
+  37:main.c        **** 			
+ 602               		.loc 3 37 0
+ 603 0042 00D0      		rcall system_sleep
+ 604               	.LVL35:
+  40:main.c        **** 			sbi(ADCSRA, ADIE);
+ 605               		.loc 3 40 0
+ 606 0044 8091 7A00 		lds r24,122
+ 607 0048 8068      		ori r24,lo8(-128)
+ 608 004a 8093 7A00 		sts 122,r24
+  41:main.c        **** 			
+ 609               		.loc 3 41 0
+ 610 004e 8091 7A00 		lds r24,122
+ 611 0052 8860      		ori r24,lo8(8)
+ 612 0054 8093 7A00 		sts 122,r24
+  44:main.c        **** 			_delay_ms(100);
+ 613               		.loc 3 44 0
+ 614 0058 8091 6800 		lds r24,104
+ 615 005c 8B7F      		andi r24,lo8(-5)
+ 616 005e 8093 6800 		sts 104,r24
+ 617               	.LVL36:
+ 618               	.LBB61:
+ 619               	.LBB62:
+ 620               		.loc 2 187 0
+ 621 0062 87EA      		ldi r24,lo8(24999)
+ 622 0064 91E6      		ldi r25,hi8(24999)
+ 623 0066 0197      	1:	sbiw r24,1
+ 624 0068 01F4      		brne 1b
+ 625 006a 00C0      		rjmp .
+ 626 006c 0000      		nop
+ 627               	.LVL37:
+ 628               	.LBE62:
+ 629               	.LBE61:
+  47:main.c        **** 		}
+ 630               		.loc 3 47 0
+ 631 006e 00D0      		rcall animate_leds
+ 632               	.LVL38:
+ 633               	.L27:
  634               	.LBE58:
   19:main.c        **** 	setup();
  635               		.loc 3 19 0 discriminator 1
@@ -1093,8 +1095,8 @@
  640               	.L28:
  641               	.LBB66:
  642               	.LBB63:
-  53:main.c        **** 			_delay_ms(5);
- 643               		.loc 3 53 0 discriminator 3
+  54:main.c        **** 			_delay_ms(5);
+ 643               		.loc 3 54 0 discriminator 3
  644 0076 60E0      		ldi r22,0
  645 0078 83E0      		ldi r24,lo8(3)
  646 007a 00D0      		rcall adc_read
@@ -1116,226 +1118,226 @@
  662               	.LVL43:
  663               	.LBE65:
  664               	.LBE64:
-  52:main.c        **** 			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
- 665               		.loc 3 52 0 discriminator 3
+  53:main.c        **** 			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+ 665               		.loc 3 53 0 discriminator 3
  666 008e 01F4      		brne .L28
  667               	.LBE63:
- 668               		.loc 3 56 0
+ 668               		.loc 3 57 0
  669 0090 CE01      		movw r24,r28
  670 0092 B701      		movw r22,r14
  671 0094 00D0      		rcall __udivmodhi4
  672               	.LVL44:
-  57:main.c        **** 		
   58:main.c        **** 		
-  59:main.c        **** 		// Red
-  60:main.c        **** 		if (batteryVoltageLevel >= 675) {
- 673               		.loc 3 60 0
+  59:main.c        **** 		
+  60:main.c        **** 		// Red
+  61:main.c        **** 		if (batteryVoltageLevel >= 675) {
+ 673               		.loc 3 61 0
  674 0096 633A      		cpi r22,-93
  675 0098 92E0      		ldi r25,2
  676 009a 7907      		cpc r23,r25
  677 009c 00F0      		brlo .L29
-  61:main.c        **** 			PORTD |= (1<<LED1);
- 678               		.loc 3 61 0
+  62:main.c        **** 			PORTD |= (1<<LED1);
+ 678               		.loc 3 62 0
  679 009e 589A      		sbi 0xb,0
-  62:main.c        **** 		}
-  63:main.c        **** 		else {
-  64:main.c        **** 			PORTD &= ~(1<<LED1);
-  65:main.c        **** 		}
-  66:main.c        **** 		if (batteryVoltageLevel >= 720) {
- 680               		.loc 3 66 0
+  63:main.c        **** 		}
+  64:main.c        **** 		else {
+  65:main.c        **** 			PORTD &= ~(1<<LED1);
+  66:main.c        **** 		}
+  67:main.c        **** 		if (batteryVoltageLevel >= 720) {
+ 680               		.loc 3 67 0
  681 00a0 603D      		cpi r22,-48
  682 00a2 82E0      		ldi r24,2
  683 00a4 7807      		cpc r23,r24
  684 00a6 00F4      		brsh .L30
  685 00a8 00C0      		rjmp .L31
  686               	.L29:
-  64:main.c        **** 		}
- 687               		.loc 3 64 0
+  65:main.c        **** 		}
+ 687               		.loc 3 65 0
  688 00aa 5898      		cbi 0xb,0
  689 00ac 00C0      		rjmp .L31
  690               	.L30:
-  67:main.c        **** 			PORTD |= (1<<LED2);
- 691               		.loc 3 67 0
+  68:main.c        **** 			PORTD |= (1<<LED2);
+ 691               		.loc 3 68 0
  692 00ae 599A      		sbi 0xb,1
-  68:main.c        **** 		}
-  69:main.c        **** 		else {
-  70:main.c        **** 			PORTD &= ~(1<<LED2);
-  71:main.c        **** 		}
-  72:main.c        **** 		if (batteryVoltageLevel >= 750) {
- 693               		.loc 3 72 0
+  69:main.c        **** 		}
+  70:main.c        **** 		else {
+  71:main.c        **** 			PORTD &= ~(1<<LED2);
+  72:main.c        **** 		}
+  73:main.c        **** 		if (batteryVoltageLevel >= 750) {
+ 693               		.loc 3 73 0
  694 00b0 6E3E      		cpi r22,-18
  695 00b2 92E0      		ldi r25,2
  696 00b4 7907      		cpc r23,r25
  697 00b6 00F4      		brsh .L32
  698 00b8 00C0      		rjmp .L33
  699               	.L31:
-  70:main.c        **** 		}
- 700               		.loc 3 70 0
+  71:main.c        **** 		}
+ 700               		.loc 3 71 0
  701 00ba 5998      		cbi 0xb,1
  702 00bc 00C0      		rjmp .L33
  703               	.L32:
-  73:main.c        **** 			PORTD |= (1<<LED3);
- 704               		.loc 3 73 0
+  74:main.c        **** 			PORTD |= (1<<LED3);
+ 704               		.loc 3 74 0
  705 00be 5A9A      		sbi 0xb,2
-  74:main.c        **** 		}
-  75:main.c        **** 		else {
-  76:main.c        **** 			PORTD &= ~(1<<LED3);
-  77:main.c        **** 		}
-  78:main.c        **** 		
-  79:main.c        **** 		// Blue
-  80:main.c        **** 		if (batteryVoltageLevel >= 825) {
- 706               		.loc 3 80 0
+  75:main.c        **** 		}
+  76:main.c        **** 		else {
+  77:main.c        **** 			PORTD &= ~(1<<LED3);
+  78:main.c        **** 		}
+  79:main.c        **** 		
+  80:main.c        **** 		// Blue
+  81:main.c        **** 		if (batteryVoltageLevel >= 825) {
+ 706               		.loc 3 81 0
  707 00c0 6933      		cpi r22,57
  708 00c2 83E0      		ldi r24,3
  709 00c4 7807      		cpc r23,r24
  710 00c6 00F4      		brsh .L34
  711 00c8 00C0      		rjmp .L35
  712               	.L33:
-  76:main.c        **** 		}
- 713               		.loc 3 76 0
+  77:main.c        **** 		}
+ 713               		.loc 3 77 0
  714 00ca 5A98      		cbi 0xb,2
  715 00cc 00C0      		rjmp .L35
  716               	.L34:
-  81:main.c        **** 			PORTD |= (1<<LED4);
- 717               		.loc 3 81 0
+  82:main.c        **** 			PORTD |= (1<<LED4);
+ 717               		.loc 3 82 0
  718 00ce 5B9A      		sbi 0xb,3
-  82:main.c        **** 		}
-  83:main.c        **** 		else {
-  84:main.c        **** 			PORTD &= ~(1<<LED4);
-  85:main.c        **** 		}
-  86:main.c        **** 		if (batteryVoltageLevel >= 850) {
- 719               		.loc 3 86 0
+  83:main.c        **** 		}
+  84:main.c        **** 		else {
+  85:main.c        **** 			PORTD &= ~(1<<LED4);
+  86:main.c        **** 		}
+  87:main.c        **** 		if (batteryVoltageLevel >= 850) {
+ 719               		.loc 3 87 0
  720 00d0 6235      		cpi r22,82
  721 00d2 93E0      		ldi r25,3
  722 00d4 7907      		cpc r23,r25
  723 00d6 00F4      		brsh .L36
  724 00d8 00C0      		rjmp .L37
  725               	.L35:
-  84:main.c        **** 		}
- 726               		.loc 3 84 0
+  85:main.c        **** 		}
+ 726               		.loc 3 85 0
  727 00da 5B98      		cbi 0xb,3
  728 00dc 00C0      		rjmp .L37
  729               	.L36:
-  87:main.c        **** 			PORTB |= (1<<LED5);
- 730               		.loc 3 87 0
+  88:main.c        **** 			PORTB |= (1<<LED5);
+ 730               		.loc 3 88 0
  731 00de 2F9A      		sbi 0x5,7
-  88:main.c        **** 		}
-  89:main.c        **** 		else {
-  90:main.c        **** 			PORTB &= ~(1<<LED5);
-  91:main.c        **** 		}
-  92:main.c        **** 		if (batteryVoltageLevel >= 875) {
- 732               		.loc 3 92 0
+  89:main.c        **** 		}
+  90:main.c        **** 		else {
+  91:main.c        **** 			PORTB &= ~(1<<LED5);
+  92:main.c        **** 		}
+  93:main.c        **** 		if (batteryVoltageLevel >= 875) {
+ 732               		.loc 3 93 0
  733 00e0 6B36      		cpi r22,107
  734 00e2 83E0      		ldi r24,3
  735 00e4 7807      		cpc r23,r24
  736 00e6 00F4      		brsh .L38
  737 00e8 00C0      		rjmp .L39
  738               	.L37:
-  90:main.c        **** 		}
- 739               		.loc 3 90 0
+  91:main.c        **** 		}
+ 739               		.loc 3 91 0
  740 00ea 2F98      		cbi 0x5,7
  741 00ec 00C0      		rjmp .L39
  742               	.L38:
-  93:main.c        **** 			PORTD |= (1<<LED6);
- 743               		.loc 3 93 0
+  94:main.c        **** 			PORTD |= (1<<LED6);
+ 743               		.loc 3 94 0
  744 00ee 5D9A      		sbi 0xb,5
-  94:main.c        **** 		}
-  95:main.c        **** 		else {
-  96:main.c        **** 			PORTD &= ~(1<<LED6);
-  97:main.c        **** 		}
-  98:main.c        **** 		if (batteryVoltageLevel >= 890) {
- 745               		.loc 3 98 0
+  95:main.c        **** 		}
+  96:main.c        **** 		else {
+  97:main.c        **** 			PORTD &= ~(1<<LED6);
+  98:main.c        **** 		}
+  99:main.c        **** 		if (batteryVoltageLevel >= 890) {
+ 745               		.loc 3 99 0
  746 00f0 6A37      		cpi r22,122
  747 00f2 93E0      		ldi r25,3
  748 00f4 7907      		cpc r23,r25
  749 00f6 00F4      		brsh .L40
  750 00f8 00C0      		rjmp .L41
  751               	.L39:
-  96:main.c        **** 		}
- 752               		.loc 3 96 0
+  97:main.c        **** 		}
+ 752               		.loc 3 97 0
  753 00fa 5D98      		cbi 0xb,5
  754 00fc 00C0      		rjmp .L41
  755               	.L40:
-  99:main.c        **** 			PORTD |= (1<<LED7);
- 756               		.loc 3 99 0
+ 100:main.c        **** 			PORTD |= (1<<LED7);
+ 756               		.loc 3 100 0
  757 00fe 5E9A      		sbi 0xb,6
- 100:main.c        **** 		}
- 101:main.c        **** 		else {
- 102:main.c        **** 			PORTD &= ~(1<<LED7);
- 103:main.c        **** 		}
- 104:main.c        **** 		
- 105:main.c        **** 		// Green
- 106:main.c        **** 		if (batteryVoltageLevel >= 910) {
- 758               		.loc 3 106 0
+ 101:main.c        **** 		}
+ 102:main.c        **** 		else {
+ 103:main.c        **** 			PORTD &= ~(1<<LED7);
+ 104:main.c        **** 		}
+ 105:main.c        **** 		
+ 106:main.c        **** 		// Green
+ 107:main.c        **** 		if (batteryVoltageLevel >= 910) {
+ 758               		.loc 3 107 0
  759 0100 6E38      		cpi r22,-114
  760 0102 83E0      		ldi r24,3
  761 0104 7807      		cpc r23,r24
  762 0106 00F4      		brsh .L42
  763 0108 00C0      		rjmp .L43
  764               	.L41:
- 102:main.c        **** 		}
- 765               		.loc 3 102 0
+ 103:main.c        **** 		}
+ 765               		.loc 3 103 0
  766 010a 5E98      		cbi 0xb,6
  767 010c 00C0      		rjmp .L43
  768               	.L42:
- 107:main.c        **** 			PORTD |= (1<<LED8);
- 769               		.loc 3 107 0
+ 108:main.c        **** 			PORTD |= (1<<LED8);
+ 769               		.loc 3 108 0
  770 010e 5F9A      		sbi 0xb,7
- 108:main.c        **** 		}
- 109:main.c        **** 		else {
- 110:main.c        **** 			PORTD &= ~(1<<LED8);
- 111:main.c        **** 		}
- 112:main.c        **** 		if (batteryVoltageLevel >= 920) {
- 771               		.loc 3 112 0
+ 109:main.c        **** 		}
+ 110:main.c        **** 		else {
+ 111:main.c        **** 			PORTD &= ~(1<<LED8);
+ 112:main.c        **** 		}
+ 113:main.c        **** 		if (batteryVoltageLevel >= 920) {
+ 771               		.loc 3 113 0
  772 0110 6839      		cpi r22,-104
  773 0112 93E0      		ldi r25,3
  774 0114 7907      		cpc r23,r25
  775 0116 00F4      		brsh .L44
  776 0118 00C0      		rjmp .L45
  777               	.L43:
- 110:main.c        **** 		}
- 778               		.loc 3 110 0
+ 111:main.c        **** 		}
+ 778               		.loc 3 111 0
  779 011a 5F98      		cbi 0xb,7
  780 011c 00C0      		rjmp .L45
  781               	.L44:
- 113:main.c        **** 			PORTB |= (1<<LED9);
- 782               		.loc 3 113 0
+ 114:main.c        **** 			PORTB |= (1<<LED9);
+ 782               		.loc 3 114 0
  783 011e 289A      		sbi 0x5,0
- 114:main.c        **** 		}
- 115:main.c        **** 		else {
- 116:main.c        **** 			PORTB &= ~(1<<LED9);
- 117:main.c        **** 		}
- 118:main.c        **** 		if (batteryVoltageLevel >= 930) {
- 784               		.loc 3 118 0
+ 115:main.c        **** 		}
+ 116:main.c        **** 		else {
+ 117:main.c        **** 			PORTB &= ~(1<<LED9);
+ 118:main.c        **** 		}
+ 119:main.c        **** 		if (batteryVoltageLevel >= 930) {
+ 784               		.loc 3 119 0
  785 0120 623A      		cpi r22,-94
  786 0122 7340      		sbci r23,3
  787 0124 00F0      		brlo .L47
- 119:main.c        **** 			PORTB |= (1<<LED10);
- 788               		.loc 3 119 0
+ 120:main.c        **** 			PORTB |= (1<<LED10);
+ 788               		.loc 3 120 0
  789 0126 299A      		sbi 0x5,1
  790 0128 00C0      		rjmp .L48
  791               	.L45:
- 116:main.c        **** 		}
- 792               		.loc 3 116 0
+ 117:main.c        **** 		}
+ 792               		.loc 3 117 0
  793 012a 2898      		cbi 0x5,0
  794               	.L47:
- 120:main.c        **** 		}
- 121:main.c        **** 		else {
- 122:main.c        **** 			PORTB &= ~(1<<LED10);
- 795               		.loc 3 122 0
+ 121:main.c        **** 		}
+ 122:main.c        **** 		else {
+ 123:main.c        **** 			PORTB &= ~(1<<LED10);
+ 795               		.loc 3 123 0
  796 012c 2998      		cbi 0x5,1
  797               	.L48:
- 123:main.c        **** 		}
- 124:main.c        **** 		
- 125:main.c        **** 		// Sleep for 1 second
- 126:main.c        **** 		watchdog_sleep(T1S);
- 798               		.loc 3 126 0
+ 124:main.c        **** 		}
+ 125:main.c        **** 		
+ 126:main.c        **** 		// Sleep for 1 second
+ 127:main.c        **** 		watchdog_sleep(T1S);
+ 798               		.loc 3 127 0
  799 012e 86E0      		ldi r24,lo8(6)
  800 0130 00D0      		rcall watchdog_sleep
  801               	.LVL45:
  802               	.LBE66:
- 127:main.c        **** 	}
- 803               		.loc 3 127 0
+ 128:main.c        **** 	}
+ 803               		.loc 3 128 0
  804 0132 00C0      		rjmp .L49
  805               		.cfi_endproc
  806               	.LFE13:
@@ -1343,20 +1345,20 @@
  809               	.global	__vector_16
  811               	__vector_16:
  812               	.LFB14:
- 128:main.c        **** 	
- 129:main.c        **** 	return 0;
- 130:main.c        **** }
- 131:main.c        **** 
- 132:main.c        **** EMPTY_INTERRUPT(ADC_vect);
- 813               		.loc 3 132 0
+ 129:main.c        **** 	
+ 130:main.c        **** 	return 0;
+ 131:main.c        **** }
+ 132:main.c        **** 
+ 133:main.c        **** EMPTY_INTERRUPT(ADC_vect);
+ 813               		.loc 3 133 0
  814               		.cfi_startproc
  815               	/* prologue: naked */
  816               	/* frame size = 0 */
  817               	/* stack size = 0 */
  818               	.L__stack_usage = 0
- 819               		.loc 3 132 0
+ 819               		.loc 3 133 0
  820               	/* #APP */
- 821               	 ;  132 "main.c" 1
+ 821               	 ;  133 "main.c" 1
  822 01ee 1895      		reti
  823               	 ;  0 "" 2
  824               	/* epilogue start */
@@ -1366,16 +1368,16 @@
  829               	.global	__vector_7
  831               	__vector_7:
  832               	.LFB15:
- 133:main.c        **** EMPTY_INTERRUPT(WDT_vect);
- 833               		.loc 3 133 0
+ 134:main.c        **** EMPTY_INTERRUPT(WDT_vect);
+ 833               		.loc 3 134 0
  834               		.cfi_startproc
  835               	/* prologue: naked */
  836               	/* frame size = 0 */
  837               	/* stack size = 0 */
  838               	.L__stack_usage = 0
- 839               		.loc 3 133 0
+ 839               		.loc 3 134 0
  840               	/* #APP */
- 841               	 ;  133 "main.c" 1
+ 841               	 ;  134 "main.c" 1
  842 01f0 1895      		reti
  843               	 ;  0 "" 2
  844               	/* epilogue start */
@@ -1385,9 +1387,9 @@
  849               	.global	__vector_5
  851               	__vector_5:
  852               	.LFB16:
- 134:main.c        **** 
- 135:main.c        **** ISR(PCINT2_vect) {
- 853               		.loc 3 135 0
+ 135:main.c        **** 
+ 136:main.c        **** ISR(PCINT2_vect) {
+ 853               		.loc 3 136 0
  854               		.cfi_startproc
  855 01f2 1F92      		push r1
  856               	.LCFI3:
@@ -1426,9 +1428,9 @@
  889               	/* epilogue start */
  890               	.LBE68:
  891               	.LBE67:
- 136:main.c        **** 	_delay_ms(200);
- 137:main.c        **** }
- 892               		.loc 3 137 0
+ 137:main.c        **** 	_delay_ms(200);
+ 138:main.c        **** }
+ 892               		.loc 3 138 0
  893 020c 9F91      		pop r25
  894 020e 8F91      		pop r24
  895 0210 0F90      		pop r0
@@ -1442,22 +1444,22 @@
  904               		.file 4 "c:\\winavr-20100110\\avr\\include\\stdint.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:2      *ABS*:0000003e __SP_H__
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:3      *ABS*:0000003d __SP_L__
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:4      *ABS*:0000003f __SREG__
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:5      *ABS*:00000000 __tmp_reg__
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:6      *ABS*:00000001 __zero_reg__
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:12     .text:00000000 system_sleep
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:45     .text:00000018 setup_watchdog
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:104    .text:00000046 turn_off_watchdog
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:146    .text:00000060 watchdog_sleep
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:169    .text:00000066 adc_read
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:220    .text:00000094 animate_leds
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:487    .text:000001ac setup
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:548    .text.startup:00000000 main
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:811    .text:000001ee __vector_16
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:831    .text:000001f0 __vector_7
-C:\Users\Alex\AppData\Local\Temp\ccpPGaRV.s:851    .text:000001f2 __vector_5
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:2      *ABS*:0000003e __SP_H__
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:3      *ABS*:0000003d __SP_L__
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:4      *ABS*:0000003f __SREG__
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:5      *ABS*:00000000 __tmp_reg__
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:6      *ABS*:00000001 __zero_reg__
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:12     .text:00000000 system_sleep
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:45     .text:00000018 setup_watchdog
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:104    .text:00000046 turn_off_watchdog
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:146    .text:00000060 watchdog_sleep
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:169    .text:00000066 adc_read
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:220    .text:00000094 animate_leds
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:487    .text:000001ac setup
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:548    .text.startup:00000000 main
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:811    .text:000001ee __vector_16
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:831    .text:000001f0 __vector_7
+C:\Users\Alex\AppData\Local\Temp\cc621hQS.s:851    .text:000001f2 __vector_5
 
 UNDEFINED SYMBOLS
 __udivmodhi4

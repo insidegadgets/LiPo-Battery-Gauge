@@ -23,9 +23,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_str    000003d4  00000000  00000000  00001d20  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000060d  00000000  00000000  000020f4  2**0
+ 10 .debug_loc    0000060f  00000000  00000000  000020f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000030  00000000  00000000  00002701  2**0
+ 11 .debug_ranges 00000030  00000000  00000000  00002703  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -535,82 +535,84 @@ ISR(PCINT2_vect) {
 int main (void) {
 	setup();
  254:	c8 df       	rcall	.-112    	; 0x1e6 <setup>
-	animate_leds(); // Animate LEDs at start
- 256:	3b df       	rcall	.-394    	; 0xce <animate_leds>
 		uint16_t batteryVoltageLevel = 0;
 		for (uint8_t x = 0; x < 5; x++) {
 			batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
 			_delay_ms(5);
 		}
 		batteryVoltageLevel = batteryVoltageLevel / 5;
- 258:	85 e0       	ldi	r24, 0x05	; 5
- 25a:	e8 2e       	mov	r14, r24
- 25c:	f1 2c       	mov	r15, r1
+ 256:	85 e0       	ldi	r24, 0x05	; 5
+ 258:	e8 2e       	mov	r14, r24
+ 25a:	f1 2c       	mov	r15, r1
+int main (void) {
 	setup();
-	animate_leds(); // Animate LEDs at start
 	
 	while(1) {
 		// Power pin (PD4) low, go to sleep
 		if (!(PIND & (1<<POWER_ON_PIN))) {
- 25e:	4c 99       	sbic	0x09, 4	; 9
- 260:	31 c0       	rjmp	.+98     	; 0x2c4 <main+0x70>
- 262:	8f e4       	ldi	r24, 0x4F	; 79
- 264:	93 ec       	ldi	r25, 0xC3	; 195
- 266:	01 97       	sbiw	r24, 0x01	; 1
- 268:	f1 f7       	brne	.-4      	; 0x266 <main+0x12>
- 26a:	00 c0       	rjmp	.+0      	; 0x26c <main+0x18>
- 26c:	00 00       	nop
+ 25c:	4c 99       	sbic	0x09, 4	; 9
+ 25e:	32 c0       	rjmp	.+100    	; 0x2c4 <main+0x70>
+ 260:	8f e4       	ldi	r24, 0x4F	; 79
+ 262:	93 ec       	ldi	r25, 0xC3	; 195
+ 264:	01 97       	sbiw	r24, 0x01	; 1
+ 266:	f1 f7       	brne	.-4      	; 0x264 <main+0x10>
+ 268:	00 c0       	rjmp	.+0      	; 0x26a <main+0x16>
+ 26a:	00 00       	nop
 			_delay_ms(200);
 			
 			// Turn off LEDs
 			PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
- 26e:	8b b1       	in	r24, 0x0b	; 11
- 270:	80 71       	andi	r24, 0x10	; 16
- 272:	8b b9       	out	0x0b, r24	; 11
+ 26c:	8b b1       	in	r24, 0x0b	; 11
+ 26e:	80 71       	andi	r24, 0x10	; 16
+ 270:	8b b9       	out	0x0b, r24	; 11
 			PORTB &= ~((1<<LED5) | (1<<LED9) | (1<<LED10));
- 274:	85 b1       	in	r24, 0x05	; 5
- 276:	8c 77       	andi	r24, 0x7C	; 124
- 278:	85 b9       	out	0x05, r24	; 5
+ 272:	85 b1       	in	r24, 0x05	; 5
+ 274:	8c 77       	andi	r24, 0x7C	; 124
+ 276:	85 b9       	out	0x05, r24	; 5
 			
 			// Disable ADC/interrupt
 			cbi(ADCSRA, ADEN);
- 27a:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
- 27e:	8f 77       	andi	r24, 0x7F	; 127
- 280:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 278:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 27c:	8f 77       	andi	r24, 0x7F	; 127
+ 27e:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
 			cbi(ADCSRA, ADIE);
- 284:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
- 288:	87 7f       	andi	r24, 0xF7	; 247
- 28a:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 282:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 286:	87 7f       	andi	r24, 0xF7	; 247
+ 288:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
 			
 			// Enable pin change interrupt
 			sbi(PCICR, PCIE2);
- 28e:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
- 292:	84 60       	ori	r24, 0x04	; 4
- 294:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 28c:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 290:	84 60       	ori	r24, 0x04	; 4
+ 292:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
 			system_sleep();
- 298:	d0 de       	rcall	.-608    	; 0x3a <system_sleep>
+ 296:	d1 de       	rcall	.-606    	; 0x3a <system_sleep>
 			
 			// Enable ADC/interrupt
 			sbi(ADCSRA, ADEN);
- 29a:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
- 29e:	80 68       	ori	r24, 0x80	; 128
- 2a0:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 298:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 29c:	80 68       	ori	r24, 0x80	; 128
+ 29e:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
 			sbi(ADCSRA, ADIE);
- 2a4:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
- 2a8:	88 60       	ori	r24, 0x08	; 8
- 2aa:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 2a2:	80 91 7a 00 	lds	r24, 0x007A	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
+ 2a6:	88 60       	ori	r24, 0x08	; 8
+ 2a8:	80 93 7a 00 	sts	0x007A, r24	; 0x80007a <__EEPROM_REGION_LENGTH__+0x7f007a>
 			
 			// Disable pin change interrupt
 			cbi(PCICR, PCIE2);
- 2ae:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
- 2b2:	8b 7f       	andi	r24, 0xFB	; 251
- 2b4:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
- 2b8:	83 ec       	ldi	r24, 0xC3	; 195
- 2ba:	99 e0       	ldi	r25, 0x09	; 9
- 2bc:	01 97       	sbiw	r24, 0x01	; 1
- 2be:	f1 f7       	brne	.-4      	; 0x2bc <main+0x68>
- 2c0:	00 c0       	rjmp	.+0      	; 0x2c2 <main+0x6e>
- 2c2:	00 00       	nop
+ 2ac:	80 91 68 00 	lds	r24, 0x0068	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 2b0:	8b 7f       	andi	r24, 0xFB	; 251
+ 2b2:	80 93 68 00 	sts	0x0068, r24	; 0x800068 <__EEPROM_REGION_LENGTH__+0x7f0068>
+ 2b6:	87 ea       	ldi	r24, 0xA7	; 167
+ 2b8:	91 e6       	ldi	r25, 0x61	; 97
+ 2ba:	01 97       	sbiw	r24, 0x01	; 1
+ 2bc:	f1 f7       	brne	.-4      	; 0x2ba <main+0x66>
+ 2be:	00 c0       	rjmp	.+0      	; 0x2c0 <main+0x6c>
+ 2c0:	00 00       	nop
+			_delay_ms(100);
+			
+			animate_leds(); // Animate LEDs at start
+ 2c2:	05 df       	rcall	.-502    	; 0xce <animate_leds>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <avr/sleep.h>
@@ -876,7 +878,7 @@ int main (void) {
  382:	86 e0       	ldi	r24, 0x06	; 6
  384:	8a de       	rcall	.-748    	; 0x9a <watchdog_sleep>
 	}
- 386:	6b cf       	rjmp	.-298    	; 0x25e <main+0xa>
+ 386:	6a cf       	rjmp	.-300    	; 0x25c <main+0x8>
 
 00000388 <__udivmodhi4>:
  388:	aa 1b       	sub	r26, r26

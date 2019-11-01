@@ -18,7 +18,6 @@
 
 int main (void) {
 	setup();
-	animate_leds(); // Animate LEDs at start
 	
 	while(1) {
 		// Power pin (PD4) low, go to sleep
@@ -43,7 +42,9 @@ int main (void) {
 			
 			// Disable pin change interrupt
 			cbi(PCICR, PCIE2);
-			_delay_ms(10);
+			_delay_ms(100);
+			
+			animate_leds(); // Animate LEDs at start
 		}
 		
 		
