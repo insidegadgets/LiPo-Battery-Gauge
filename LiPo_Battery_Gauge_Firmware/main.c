@@ -1,9 +1,9 @@
 /*
  LiPo Battery Gauge
- Version: 1.1
+ Version: 1.2
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
- Last Modified: 11/11/2019
+ Last Modified: 1/11/2019
  
 */
 
@@ -18,6 +18,7 @@
 
 int main (void) {
 	setup();
+	animate_leds(); // Animate LEDs at start
 	
 	while(1) {
 		// Power pin (PD4) low, go to sleep

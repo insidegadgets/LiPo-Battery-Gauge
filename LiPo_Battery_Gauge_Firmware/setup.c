@@ -1,6 +1,6 @@
 /*
  LiPo Battery Gauge
- Version: 1.1
+ Version: 1.2
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
  Last Modified: 1/11/2019
@@ -52,6 +52,7 @@
 #define REF_1_1V 0
 #define REF_AVCC 1
 
+#define DELAY_TIME 50
 
 // Sleep
 void system_sleep(void) {
@@ -120,6 +121,64 @@ int adc_read(uint8_t pin, uint8_t reference) {
 	
 	// combine the two bytes
 	return (high << 8) | low;
+}
+
+// Animate LEDs at start-up
+void animate_leds(void) {
+	_delay_ms(100);
+	
+	// 5 samples over 25ms
+	uint16_t batteryVoltageLevel = 0;
+	for (uint8_t x = 0; x < 5; x++) {
+		batteryVoltageLevel += adc_read(batteryADCPin, REF_1_1V);
+		_delay_ms(5);
+	}
+	batteryVoltageLevel = batteryVoltageLevel / 5;
+	
+	// Red
+	if (batteryVoltageLevel >= 675) {
+		PORTD |= (1<<LED1);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 720) {
+		PORTD |= (1<<LED2);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 750) {
+		PORTD |= (1<<LED3);
+		_delay_ms(DELAY_TIME);
+	}
+	
+	// Blue
+	if (batteryVoltageLevel >= 825) {
+		PORTD |= (1<<LED4);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 850) {
+		PORTB |= (1<<LED5);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 875) {
+		PORTD |= (1<<LED6);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 890) {
+		PORTD |= (1<<LED7);
+		_delay_ms(DELAY_TIME);
+	}
+	
+	// Green
+	if (batteryVoltageLevel >= 910) {
+		PORTD |= (1<<LED8);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 920) {
+		PORTB |= (1<<LED9);
+		_delay_ms(DELAY_TIME);
+	}
+	if (batteryVoltageLevel >= 930) {
+		PORTB |= (1<<LED10);
+	}
 }
 
 // Setup
