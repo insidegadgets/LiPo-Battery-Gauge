@@ -1,9 +1,9 @@
 /*
  LiPo Battery Gauge
- Version: 1.0
+ Version: 1.1
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
- Last Modified: 13/10/2019
+ Last Modified: 1/11/2019
 
  */
  
@@ -70,18 +70,24 @@ void setup_watchdog(uint8_t wdDelay) {
 		bb |= (1<<5);
 	}
 	
+	cli(); // Turn interrupts off
+	asm("WDR");
+	
 	MCUSR &= ~(1<<WDRF);
 	// Start timed sequence
 	WDTCSR |= (1<<WDCE) | (1<<WDE);
 	// Set new watchdog timeout value
 	WDTCSR = bb | (1<<WDIE);
+	
+	sei(); // Turn interrupts back on
 }
 
 // Turn off the Watchdog
 void turn_off_watchdog(void) {
 	cli(); // Turn interrupts off
+	asm("WDR");
 	MCUSR &= ~(1<<WDRF);
-	WDTCSR |= (1<<WDCE) | (1<<WDE);
+	WDTCSR |= (1<<WDCE) | (1<<WDIE);
 	WDTCSR = 0;
 	sei(); // Turn interrupts back on
 }

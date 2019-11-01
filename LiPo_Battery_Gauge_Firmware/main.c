@@ -1,9 +1,9 @@
 /*
  LiPo Battery Gauge
- Version: 1.0
+ Version: 1.1
  Author: Alex from insideGadgets (http://www.insidegadgets.com)
  Created: 13/10/2019
- Last Modified: 13/10/2019
+ Last Modified: 11/11/2019
  
 */
 
@@ -22,7 +22,7 @@ int main (void) {
 	while(1) {
 		// Power pin (PD4) low, go to sleep
 		if (!(PIND & (1<<POWER_ON_PIN))) {
-			_delay_ms(50);
+			_delay_ms(200);
 			
 			// Turn off LEDs
 			PORTD &= ~((1<<LED1) | (1<<LED2) | (1<<LED3) | (1<<LED4) | (1<<LED6) | (1<<LED7) | (1<<LED8));
@@ -42,7 +42,6 @@ int main (void) {
 			
 			// Disable pin change interrupt
 			cbi(PCICR, PCIE2);
-			
 			_delay_ms(10);
 		}
 		
@@ -122,13 +121,16 @@ int main (void) {
 			PORTB &= ~(1<<LED10);
 		}
 		
-		_delay_ms(1000);
+		// Sleep for 1 second
+		watchdog_sleep(T1S);
 	}
 	
 	return 0;
 }
 
 EMPTY_INTERRUPT(ADC_vect);
-ISR(PCINT0_vect) {
-	_delay_ms(50);
+EMPTY_INTERRUPT(WDT_vect);
+
+ISR(PCINT2_vect) {
+	_delay_ms(200);
 }
