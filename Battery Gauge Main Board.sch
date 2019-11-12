@@ -2952,7 +2952,7 @@ Metric Code Size 3216</description>
 <part name="LIPO-" library="SparkFun" deviceset="M01" device="SMALL"/>
 <part name="GND2" library="SparkFun" deviceset="GND" device=""/>
 <part name="R6" library="adafruit" deviceset="R-US_" device="R0603_S" value="10K"/>
-<part name="U3" library="avr-5" deviceset="TINY48" device=""/>
+<part name="U3" library="avr-5" deviceset="TINY48" device="" value="ATtiny48-MMU"/>
 <part name="GND6" library="SparkFun" deviceset="GND" device=""/>
 <part name="C3" library="adafruit" deviceset="CAP" device="0603" value="0.1uF"/>
 <part name="C4" library="adafruit" deviceset="CAP" device="0603" value="0.1uF"/>
